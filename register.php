@@ -5,11 +5,14 @@
 $message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
     $confirm = trim($_POST['confirm'] ?? '');
 
-    if ($username === '' || $password === '' || $confirm === '') {
+    if ($username === '' || $email === '' || $password === '' || $confirm === '') {
         $message = 'Lūdzu, aizpildiet visus laukus.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message = 'Nederīgs e-pasta formāts.';
     } elseif ($password !== $confirm) {
         $message = 'Paroles nesakrīt.';
     } else {
@@ -78,7 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: 500;
         }
         .register-form input[type="text"],
-        .register-form input[type="password"] {
+        .register-form input[type="password"],
+        .register-form input[type="email"] {
             width: 100%;
             padding: 8px 10px;
             margin-bottom: 18px;
@@ -131,6 +135,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
             <label for="username">Lietotājvārds</label>
             <input type="text" id="username" name="username" required>
+
+            <label for="email">E-pasts</label>
+            <input type="email" id="email" name="email" required>
 
             <label for="password">Parole</label>
             <input type="password" id="password" name="password" required>
