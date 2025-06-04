@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <style>
         body {
             margin: 0;
-            background: #222;
+            background: #FFFFFF; /* White main background */
             font-family: Arial, sans-serif;
         }
         .container {
@@ -83,12 +83,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             min-height: 100vh;
         }
         .sidebar {
-            background: #c3caae;
+            background: #8D6E63; /* Brown/Taupe */
             width: 320px;
             padding: 40px 30px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            color: #FFFFFF; /* White text for contrast */
         }
         .sidebar h1 {
             font-size: 2em;
@@ -96,34 +97,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: bold;
             display: flex;
             align-items: center;
+            color: #FFFFFF; /* White text */
         }
         .sidebar h1 span {
             margin-right: 10px;
         }
         .main {
             flex: 1;
-            background: #f7f7f5;
+            background: #FFFFFF; /* White background */
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .register-form {
-            background: #fff;
+            background: #FFFFFF; /* White form background */
             padding: 32px 40px;
             border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); /* Keep a subtle shadow */
             min-width: 320px;
         }
         .register-form h2 {
             margin-top: 0;
             margin-bottom: 24px;
             font-size: 1.5em;
-            color: #222;
+            color: #222; /* Dark text */
         }
         .register-form label {
             display: block;
             margin-bottom: 6px;
-            color: #222;
+            color: #222; /* Dark text */
             font-weight: 500;
         }
         .register-form input[type="text"],
@@ -132,33 +134,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 100%;
             padding: 8px 10px;
             margin-bottom: 18px;
-            border: 1px solid #c3caae;
+            border: 1px solid #ccc; /* Light grey border */
             border-radius: 4px;
-            background: #f7f7f5;
+            background: #FFFFFF; /* White background */
             font-size: 1em;
+            color: #222; /* Dark text */
         }
         .register-form button {
             width: 100%;
             padding: 10px;
-            background: #c3caae;
-            color: #222;
-            border: none;
+            background: #FFFFFF; /* White button background */
+            color: #222; /* Dark text */
+            border: 1px solid #8D6E63; /* Brown border */
             border-radius: 4px;
             font-size: 1em;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .register-form button:hover {
-            background: #b0b89c;
+            background: #FFA55D; /* Orange hover background */
+            color: #FFFFFF; /* White text on hover */
+             border-color: #FFA55D; /* Orange border on hover */
         }
         .message {
             margin-bottom: 16px;
-            color: #b00;
+            color: #b00; /* Red for errors */
             font-weight: bold;
         }
         .success {
-            color: #2b7a2b;
+            color: #2b7a2b; /* Green for success */
+        }
+        .register-form a {
+             color:#222; /* Dark text for links */
+             background:none;
+             padding:0;
+             border-radius:0;
+             text-decoration:underline;
+             font-weight:normal;
+             font-size:0.97em;
+             display:inline-block;
         }
     </style>
 </head>
