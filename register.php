@@ -1,8 +1,10 @@
 <?php
-<!-- filepath: c:\xampp\htdocs\storage-facility\register.php -->
-<?php
+
+include 'connection.php';
+
 // Simple registration logic (no database, just for demo)
 $message = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -16,10 +18,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($password !== $confirm) {
         $message = 'Paroles nesakrīt.';
     } else {
-        $message = 'Reģistrācija veiksmīga!';
-        // Here you would normally save to a database
+        // Hash the password
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $created_at = date('Y-m-d H:i:s');
+
+        // Prepare SQL statement to insert user data
+        $sql = "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+
+        if ($stmt) {
+            // Bind parameters
+            $stmt->bind_param("ssss", $username, $email, $hashed_password, $created_at);
+
+            // Execute the statement
+            if ($stmt->execute()) {
+                $message = 'Reģistrācija veiksmīga!';
+                // Here you would normally save to a database
+            } else {
+                $message = 'Kļūda reģistrējot lietotāju: ' . $stmt->error;
+            }
+
+            // Close statement
+            $stmt->close();
+        } else {
+             $message = 'Kļūda sagatavojot SQL pieprasījumu: ' . $conn->error;
+        }
     }
 }
+
+$conn->close();
+
 ?>
 <!DOCTYPE html>
 <html lang="lv">
