@@ -1,8 +1,7 @@
 <?php
+require_once 'config.php';
 
-include 'connection.php';
-
-// Simple registration logic (no database, just for demo)
+session_start();
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,35 +17,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($password !== $confirm) {
         $message = 'Paroles nesakrīt.';
     } else {
-        // Hash the password
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $created_at = date('Y-m-d H:i:s');
-
-        // Prepare SQL statement to insert user data
-        $sql = "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-
-        if ($stmt) {
-            // Bind parameters
-            $stmt->bind_param("ssss", $username, $email, $hashed_password, $created_at);
-
-            // Execute the statement
-            if ($stmt->execute()) {
-                $message = 'Reģistrācija veiksmīga!';
-                // Here you would normally save to a database
+        try {
+            // Check if username or email already exists
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = ? OR email = ?");
+            $stmt->execute([$username, $email]);
+            if ($stmt->fetchColumn() > 0) {
+                $message = 'Lietotājvārds vai e-pasts jau eksistē.';
             } else {
-                $message = 'Kļūda reģistrējot lietotāju: ' . $stmt->error;
-            }
+                // Hash the password
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $created_at = date('Y-m-d H:i:s');
 
-            // Close statement
-            $stmt->close();
-        } else {
-             $message = 'Kļūda sagatavojot SQL pieprasījumu: ' . $conn->error;
+                // Insert new user
+                $stmt = $pdo->prepare("INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)");
+                if ($stmt->execute([$username, $email, $hashed_password, $created_at])) {
+                    $message = 'Reģistrācija veiksmīga!';
+                    // Redirect to login page after successful registration
+                    header("Location: login.php");
+                    exit();
+                } else {
+                    $message = 'Kļūda reģistrējot lietotāju.';
+                }
+            }
+        } catch (PDOException $e) {
+            $message = 'Kļūda reģistrējot lietotāju: ' . $e->getMessage();
         }
     }
 }
-
-$conn->close();
 
 ?>
 <!DOCTYPE html>
