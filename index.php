@@ -1,5 +1,6 @@
 <?php
-require_once 'config.php'; // Include the DB connection
+require_once 'config.php';
+require_once 'sidebar.php';
 
 echo "<h2>Database Connection Test</h2>";
 
