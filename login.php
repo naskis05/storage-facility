@@ -1,18 +1,34 @@
 <?php
-// Simple login logic (no database, just for demo)
+require_once 'config.php';
+
+session_start();
 $message = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    // Demo credentials: user / pass
     if ($username === '' || $password === '') {
         $message = 'Lūdzu, aizpildiet visus laukus.';
-    } elseif ($username === 'user' && $password === 'pass') {
-        $message = 'Pieslēgšanās veiksmīga!';
-        // Here you would normally start a session, redirect, etc.
     } else {
-        $message = 'Nepareizs lietotājvārds vai parole.';
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+            $stmt->execute([$username]);
+            $user = $stmt->fetch();
+
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $message = 'Pieslēgšanās veiksmīga!';
+                // Redirect to dashboard or home page after successful login
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                $message = 'Nepareizs lietotājvārds vai parole.';
+            }
+        } catch (PDOException $e) {
+            $message = 'Kļūda pieslēdzoties: ' . $e->getMessage();
+        }
     }
 }
 ?>
