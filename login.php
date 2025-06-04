@@ -19,9 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role']; // Add this if you want to use role in sidebar
+                $_SESSION['logged_in'] = true;     // <-- Added line
                 $message = 'Pieslēgšanās veiksmīga!';
                 // Redirect to dashboard or home page after successful login
-                header("Location: dashboard.php");
+                header("Location: index.php");
                 exit();
             } else {
                 $message = 'Nepareizs lietotājvārds vai parole.';
