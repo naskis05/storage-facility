@@ -26,7 +26,7 @@ require_once 'config.php';
 
         <ul>
             <?php if ($_SESSION['role'] === 0): ?>
-                <li><a href="dashboard.php">Pārskats</a></li>
+                <li><a href="index.php">Pārskats</a></li>
                 <li><a href="lietotaji.php">Lietotāju pārvaldība</a></li>
                 <li><a href="iestatijumi.php">Sistēmas iestatījumi</a></li>
 
