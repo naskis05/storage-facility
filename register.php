@@ -12,10 +12,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($username === '' || $email === '' || $password === '' || $confirm === '') {
         $message = 'Lūdzu, aizpildiet visus laukus.';
+    } elseif (strpos($username, ' ') !== false) {
+        // Check for spaces
+        $message = 'Lietotājvārdā nedrīkst būt atstarpes.';
+    } elseif (!preg_match('/^[a-zA-Z0-9]*$/', $username)) {
+        // Check if it contains characters other than alphanumeric
+        $message = 'Lietotājvārdā drīkst izmantot tikai burtus un ciparus.';
+    } elseif (strlen($username) < 6 || strlen($username) > 20) {
+        // Check username length
+        $message = 'Lietotājvārdam jābūt vismaz 8 un maksimāli 20 simbolus garš.';
+    } elseif (strpos($password, ' ') !== false) {
+        // Check for spaces in password
+        $message = 'Parolē nedrīkst būt atstarpes.';
+    } elseif (strpos($email, ' ') !== false) {
+        // Check for spaces in email
+        $message = 'E-pasta adresē nedrīkst būt atstarpes.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $message = 'Nederīgs e-pasta formāts.';
     } elseif ($password !== $confirm) {
         $message = 'Paroles nesakrīt.';
+    } elseif (strlen($password) < 8 || strlen($password) > 20) {
+        // Check password length
+        $message = 'Parolei jābūt vismaz 8 un maksimāli 20 simbolus garš.';
+    } elseif (str_replace('.', '', $password) === '') {
+        // Check if the password consists only of dots
+        $message = 'Nederīgs paroles formāts.';
     } else {
         try {
             // Check if username or email already exists
@@ -159,16 +180,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
             <label for="username">Lietotājvārds</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username" required maxlength="20" onkeypress="return event.charCode != 32">
 
             <label for="email">E-pasts</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" required onkeypress="return event.charCode != 32">
 
             <label for="password">Parole</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required maxlength="20" onkeypress="return event.charCode != 32">
 
             <label for="confirm">Apstipriniet paroli</label>
-            <input type="password" id="confirm" name="confirm" required>
+            <input type="password" id="confirm" name="confirm" required maxlength="20" onkeypress="return event.charCode != 32">
 
             <button type="submit">Reģistrēties</button>
             <div style="text-align:center; margin-top:12px;">
