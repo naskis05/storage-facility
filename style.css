@@ -2,7 +2,12 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
-    background: #FFFFFF;
+    background: #FFFFFF; /* White main background */
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
 }
 
 .sidebar {
@@ -11,15 +16,15 @@ body {
     left: 0;
     height: 100vh;
     width: 320px;
-    background-color: #8D6E63;
-    color: #fff;
+    background-color: #8D6E63; /* Brown/Taupe */
+    color: #FFFFFF; /* White text for contrast */
     padding: 40px 30px;
     box-sizing: border-box;
     font-family: sans-serif;
 }
 
 .sidebar h2 {
-    color: #fff;
+    color: #FFFFFF; /* White text */
     margin-bottom: 24px;
     font-size: 2em;
     font-weight: bold;
@@ -41,13 +46,13 @@ body {
 }
 
 .sidebar a {
-    color: #FFFFFF;
+    color: #FFFFFF; /* White text for links */
     text-decoration: none;
     font-weight: bold;
 }
 
 .sidebar a:hover {
-    color: #FFA55D;
+    color: #FFA55D; /* Orange hover */
 }
 
 .sidebar ul {
@@ -57,20 +62,20 @@ body {
 .main-content {
     flex: 1;
     padding: 32px 48px;
-    background: #FFFFFF;
+    background: #FFFFFF; /* White background */
     min-height: 100vh;
-    margin-left: 320px;
+    margin-left: 320px; /* Offset for fixed sidebar */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 h2 {
-    color: #222;
+    color: #222; /* Dark text */
     font-size: 1.8em;
     margin-bottom: 24px;
     padding-bottom: 12px;
-    border-bottom: 2px solid #8D6E63;
+    border-bottom: 2px solid #8D6E63; /* Brown border */
 }
 
 h3 {
@@ -84,25 +89,27 @@ ul, p {
     color: #333;
 }
 
-/* Product Management Styles */
-.admin-panel {
+.admin-panel,
+.product-form,
+.login-form,
+.register-form {
     width: 100%;
-    max-width: 700px;
+    max-width: 700px; /* Adjust max-width as needed for different forms */
     margin: 40px auto 0 auto;
-    background: #fff;
+    background: #FFFFFF; /* White form background */
     padding: 40px 32px;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 12px; /* Slightly larger border-radius */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); /* Slightly larger shadow */
 }
 
-.product-form {
-    width: 100%;
+/* Specific form adjustments */
+.product-form,
+.login-form,
+.register-form {
     max-width: 500px;
-    margin: 0 auto 40px auto;
-    background: #f9f9f9;
     padding: 32px 24px;
     border-radius: 8px;
-    border: 1px solid #eee;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 
 .form-group {
@@ -112,23 +119,31 @@ ul, p {
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    color: #444;
+    color: #222; /* Dark text */
     font-weight: 500;
 }
 
-.form-control {
+.form-control,
+input[type="text"],
+input[type="password"],
+input[type="email"] {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc; /* Light grey border */
     border-radius: 6px;
     font-size: 1em;
     transition: border-color 0.2s, box-shadow 0.2s;
+    background: #FFFFFF; /* White background */
+    color: #222; /* Dark text */
 }
 
-.form-control:focus {
+.form-control:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
     outline: none;
-    border-color: #8D6E63;
-    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1);
+    border-color: #8D6E63; /* Brown border on focus */
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.2); /* Brown shadow on focus */
 }
 
 textarea.form-control {
@@ -144,6 +159,7 @@ textarea.form-control {
     font-weight: bold;
     font-size: 1em;
     transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .btn:hover {
@@ -152,12 +168,29 @@ textarea.form-control {
 }
 
 .btn-primary {
-    background: #8D6E63;
+    background: #8D6E63; /* Brown button */
     color: white;
+    border: 1px solid #8D6E63; /* Brown border */
 }
 
 .btn-primary:hover {
-    background: #7d5e53;
+    background: #7d5e53; /* Darker brown on hover */
+    border-color: #7d5e53;
+}
+
+/* Style for the login/register form button */
+.login-form button,
+.register-form button {
+     background: #FFFFFF; /* White button background */
+     color: #222; /* Dark text */
+     border: 1px solid #8D6E63; /* Brown border */
+}
+
+.login-form button:hover,
+.register-form button:hover {
+    background: #FFA55D; /* Orange hover background */
+    color: #FFFFFF; /* White text on hover */
+    border-color: #FFA55D; /* Orange border on hover */
 }
 
 .btn-danger {
@@ -237,6 +270,15 @@ textarea.form-control {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+    }
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
     .product-form {
         padding: 16px;
     }
@@ -250,4 +292,216 @@ textarea.form-control {
         width: 100%;
         margin-bottom: 8px;
     }
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    background: #FFFFFF; /* White main background */
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 320px;
+    background-color: #8D6E63; /* Brown/Taupe */
+    color: #FFFFFF; /* White text for contrast */
+    padding: 40px 30px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.sidebar h2 {
+    color: #FFFFFF; /* White text */
+    margin-bottom: 24px;
+    font-size: 2em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar h2 span {
+    margin-right: 10px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar a {
+    color: #FFFFFF; /* White text for links */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.sidebar a:hover {
+    color: #FFA55D; /* Orange hover */
+}
+
+.sidebar ul {
+    padding-left: 18px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 32px 48px;
+    background: #FFFFFF; /* White background */
+    min-height: 100vh;
+    margin-left: 320px; /* Offset for fixed sidebar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    color: #222; /* Dark text */
+    font-size: 1.8em;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #8D6E63; /* Brown border */
+}
+
+h3 {
+    color: #444;
+    font-size: 1.4em;
+    margin: 24px 0 16px;
+}
+
+ul, p {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.admin-panel,
+.product-form,
+.login-form,
+.register-form {
+    width: 100%;
+    max-width: 700px; /* Adjust max-width as needed for different forms */
+    margin: 40px auto 0 auto;
+    background: #FFFFFF; /* White form background */
+    padding: 40px 32px;
+    border-radius: 12px; /* Slightly larger border-radius */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); /* Slightly larger shadow */
+}
+
+/* Specific form adjustments */
+.product-form,
+.login-form,
+.register-form {
+    max-width: 500px;
+    padding: 32px 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #222; /* Dark text */
+    font-weight: 500;
+}
+
+.form-control,
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #FFFFFF; /* White background */
+    color: #222; /* Dark text */
+}
+
+.form-control:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    outline: none;
+    border-color: #8D6E63; /* Brown border on focus */
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.2); /* Brown shadow on focus */
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background: #8D6E63; /* Brown button */
+    color: white;
+    border: 1px solid #8D6E63; /* Brown border */
+}
+
+.btn-primary:hover {
+    background: #7d5e53; /* Darker brown on hover */
+    border-color: #7d5e53;
+}
+
+/* Style for the login/register form button */
+.login-form button,
+.register-form button {
+     background: #FFFFFF; /* White button background */
+     color: #222; /* Dark text */
+     border: 1px solid #8D6E63; /* Brown border */
+}
+
+.login-form button:hover,
+.register-form button:hover {
+    background: #FFA55D; /* Orange hover background */
+    color: #FFFFFF; /* White text on hover */
+    border-color: #FFA55D; /* Orange border on hover */
+}
+
+.btn-danger {
+    background: #dc3545;\n    color: white;\n    padding: 8px 16px;\n}\n\n.btn-danger:hover {\n    background: #c82333;\n}\n\n.products-table {\n    width: 100%;\n    border-collapse: separate;\n    border-spacing: 0;\n    margin-top: 24px;\n    background: white;\n    border-radius: 8px;\n    overflow: hidden;\n    box-shadow: 0 2px 8px rgba(0,0,0,0.05);\n}\n\n.products-table th {\n    padding: 16px;\n    text-align: left;\n    background: #f5f5f5;\n    color: #444;\n    font-weight: 600;\n    border-bottom: 2px solid #ddd;\n}\n\n.products-table td {\n    padding: 16px;\n    border-bottom: 1px solid #eee;\n    color: #333;\n}\n\n.products-table tr:last-child td {\n    border-bottom: none;\n}\n\n.products-table tr:hover {\n    background: #f9f9f9;\n}\n\n.success {\n    color: #2b7a2b;\n    margin-bottom: 20px;\n    padding: 12px 16px;\n    background: #e8f5e9;\n    border-radius: 6px;\n    border: 1px solid #c8e6c9;\n}\n\n.error {\n    color: #dc3545;\n    margin-bottom: 20px;\n    padding: 12px 16px;\n    background: #fde8e8;\n    border-radius: 6px;\n    border: 1px solid #fbd5d5;\n}\n\n.price-cell {\n    font-weight: 600;\n    color: #2b7a2b;\n}\n\n.quantity-cell {\n    font-weight: 500;\n}\n\n.actions-cell {\n    text-align: right;\n}\n\n/* Responsive adjustments */\n@media (max-width: 768px) {\n    .main-content {\n        margin-left: 0;\n    }\n    .sidebar {\n        position: relative;\n        width: 100%;\n        height: auto;\n        padding: 20px;\n    }\n    .product-form {\n        padding: 16px;\n    }\n    \n    .products-table {\n        display: block;\n        overflow-x: auto;\n    }\n    \n    .btn {\n        width: 100%;\n        margin-bottom: 8px;\n    }\n}\n\n.login-form a,\n.register-form a {\n     color:#222;\n     background:none;\n     padding:0;\n     border-radius:0;\n     text-decoration:underline;\n     font-weight:normal;\n     font-size:0.97em;\n     display:inline-block;\n     margin-top: 12px;\n}\n```
+
+
+/* Link style specific ]o forms (Register/Login) */
+.login-form a,
+.register-form a {
+     color:#222; /* Dark text for links */
+     background:none;
+     padding:0;
+     border-radius:0;
+     text-decoration:underline;
+     font-weight:normal;
+     font-size:0.97em;
+     display:inline-block;
+     margin-top: 12px; /* Added margin-top for spacing */
 }

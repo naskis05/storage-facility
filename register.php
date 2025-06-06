@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <style>
         body {
             margin: 0;
-            background: #FFFFFF; /* White main background */
+            background: #FFFFFF;
             font-family: Arial, sans-serif;
         }
         .container {
@@ -83,13 +83,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             min-height: 100vh;
         }
         .sidebar {
-            background: #8D6E63; /* Brown/Taupe */
+            background: #8D6E63;
             width: 320px;
             padding: 40px 30px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            color: #FFFFFF; /* White text for contrast */
+            color: #FFFFFF;
         }
         .sidebar h1 {
             font-size: 2em;
@@ -97,35 +97,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: bold;
             display: flex;
             align-items: center;
-            color: #FFFFFF; /* White text */
+            color: #FFFFFF;
         }
         .sidebar h1 span {
             margin-right: 10px;
         }
         .main {
             flex: 1;
-            background: #FFFFFF; /* White background */
+            background: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .register-form {
-            background: #FFFFFF; /* White form background */
+            background: #FFFFFF;
             padding: 32px 40px;
             border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06); /* Keep a subtle shadow */
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
             min-width: 320px;
         }
         .register-form h2 {
             margin-top: 0;
             margin-bottom: 24px;
             font-size: 1.5em;
-            color: #222; /* Dark text */
+            color: #222;
         }
         .register-form label {
             display: block;
             margin-bottom: 6px;
-            color: #222; /* Dark text */
+            color: #222;
             font-weight: 500;
         }
         .register-form input[type="text"],
@@ -134,18 +134,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 100%;
             padding: 8px 10px;
             margin-bottom: 18px;
-            border: 1px solid #ccc; /* Light grey border */
+            border: 1px solid #ccc;
             border-radius: 4px;
-            background: #FFFFFF; /* White background */
+            background: #FFFFFF;
             font-size: 1em;
-            color: #222; /* Dark text */
+            color: #222;
         }
         .register-form button {
             width: 100%;
             padding: 10px;
-            background: #FFFFFF; /* White button background */
-            color: #222; /* Dark text */
-            border: 1px solid #8D6E63; /* Brown border */
+            background: #FFFFFF;
+            color: #222;
+            border: 1px solid #8D6E63;
             border-radius: 4px;
             font-size: 1em;
             font-weight: bold;
@@ -154,20 +154,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .register-form button:hover {
-            background: #FFA55D; /* Orange hover background */
-            color: #FFFFFF; /* White text on hover */
-             border-color: #FFA55D; /* Orange border on hover */
+            background: #FFA55D;
+            color: #FFFFFF;
+             border-color: #FFA55D;
         }
         .message {
             margin-bottom: 16px;
-            color: #b00; /* Red for errors */
+            color: #b00;
             font-weight: bold;
         }
         .success {
-            color: #2b7a2b; /* Green for success */
+            color: #2b7a2b;
         }
         .register-form a {
-             color:#222; /* Dark text for links */
+             color:#222;
              background:none;
              padding:0;
              border-radius:0;
