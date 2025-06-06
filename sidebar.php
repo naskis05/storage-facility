@@ -9,15 +9,16 @@ require_once 'config.php';
     <h2><span>🏠</span>STASH</h2>
 
     <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true): ?>
-        <div style="margin-top:40px; color:#FFFFFF;">
+        <div class="sidebar-login-info">
             <div><b>Pieslēgšanās</b></div>
-            <div style="margin-top:10px; font-size:0.95em;">Lūdzu, piesakieties</div>
+            <div class="sidebar-login-desc">Lūdzu, piesakieties</div>
+            <a href="login.php" class="btn btn-primary sidebar-login-btn" style="margin-top:18px;">Log in</a>
         </div>
 
     <?php else: ?>
-        <div style="margin-top:40px; color:#FFFFFF;">
+        <div class="sidebar-user-info">
             <div><b><?php echo htmlspecialchars($_SESSION['username']); ?></b></div>
-            <div style="margin-top:10px; font-size:0.95em;">
+            <div class="sidebar-user-role">
                 <?php
                 switch ($_SESSION['role']) {
                     case 0: echo "Administrators"; break;
@@ -29,7 +30,7 @@ require_once 'config.php';
             </div>
         </div>
 
-        <ul style="margin-top: 40px;">
+        <ul class="sidebar-menu">
             <?php if ($_SESSION['role'] === 0): ?>
                 <li><a href="index.php">Pārskats</a></li>
                 <li><a href="lietotaji.php">Lietotāju pārvaldība</a></li>
@@ -45,7 +46,7 @@ require_once 'config.php';
             <?php endif; ?>
         </ul>
 
-        <div style="margin-top: 40px;">
+        <div class="sidebar-logout">
             <a href="logout.php">Izrakstīties</a>
         </div>
     <?php endif; ?>

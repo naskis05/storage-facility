@@ -251,3 +251,40 @@ textarea.form-control {
         margin-bottom: 8px;
     }
 }
+
+.sidebar-login-info {
+    margin-top: 40px;
+    color: #FFFFFF;
+}
+
+.sidebar-login-desc {
+    margin-top: 10px;
+    font-size: 0.95em;
+}
+
+.sidebar-user-info {
+    margin-top: 40px;
+    color: #FFFFFF;
+}
+
+.sidebar-user-role {
+    margin-top: 10px;
+    font-size: 0.95em;
+}
+
+.sidebar-menu {
+    margin-top: 40px;
+}
+
+.sidebar-logout {
+    margin-top: 40px;
+}
+
+.sidebar-login-btn {
+    display: block;
+    width: 75%;
+    text-align: center;
+    margin-top: 18px;
+    font-size: 1.08em;
+    letter-spacing: 0.5px;
+}
