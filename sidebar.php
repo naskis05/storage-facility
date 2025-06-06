@@ -33,10 +33,11 @@ require_once 'config.php';
             <?php if ($_SESSION['role'] === 0): ?>
                 <li><a href="index.php">Pārskats</a></li>
                 <li><a href="lietotaji.php">Lietotāju pārvaldība</a></li>
+                <li><a href="preces.php">Preču pārvaldība</a></li>
                 <li><a href="iestatijumi.php">Sistēmas iestatījumi</a></li>
 
             <?php elseif ($_SESSION['role'] === 1): ?>
-                <li><a href="preces.php">Preču saraksts</a></li>
+                <li><a href="preces.php">Preču pārvaldība</a></li>
                 <li><a href="pasutijumi.php">Pasūtījumi</a></li>
 
             <?php elseif ($_SESSION['role'] === 2): ?>
