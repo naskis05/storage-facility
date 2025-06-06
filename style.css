@@ -484,4 +484,102 @@ body {
      font-size:0.97em;
      display:inline-block;
 }
-/* Dark text for links */
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+.sidebar {
+    background: #8D6E63;
+    width: 320px;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: #FFFFFF;
+}
+.sidebar h1 {
+    font-size: 2em;
+    margin: 0 0 20px 0;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+}
+.sidebar h1 span {
+    margin-right: 10px;
+}
+.main {
+    flex: 1;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.register-form {
+    background: #FFFFFF;
+    padding: 32px 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    min-width: 320px;
+}
+.register-form h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-size: 1.5em;
+    color: #222;
+}
+.register-form label {
+    display: block;
+    margin-bottom: 6px;
+    color: #222;
+    font-weight: 500;
+}
+.register-form input[type="text"],
+.register-form input[type="password"],
+.register-form input[type="email"] {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #FFFFFF;
+    font-size: 1em;
+    color: #222;
+}
+.register-form button {
+    width: 100%;
+    padding: 10px;
+    background: #FFFFFF;
+    color: #222;
+    border: 1px solid #8D6E63;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.register-form button:hover {
+    background: #FFA55D;
+    color: #FFFFFF;
+     border-color: #FFA55D;
+}
+.message {
+    margin-bottom: 16px;
+    color: #b00;
+    font-weight: bold;
+}
+.success {
+    color: #2b7a2b;
+}
+.register-form a {
+     color:#222;
+     background:none;
+     padding:0;
+     border-radius:0;
+     text-decoration:underline;
+     font-weight:normal;
+     font-size:0.97em;
+     display:inline-block;
+}
