@@ -2,13 +2,10 @@
 require_once 'config.php';
 require_once 'sidebar.php';
 
-// Main content wrapper
 echo '<div class="main-content">';
-// Admin CRUD panel for administrators only
 if (isset($_SESSION['role']) && $_SESSION['role'] === 0):
     echo '<div class="admin-panel" style="margin-top: 32px; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">';
     echo '<h2>Admin CRUD Panel</h2>';
-    // Fetch all users
     try {
         $stmt = $pdo->query("SELECT id, username, email, role, created_at FROM users");
         $users = $stmt->fetchAll();
@@ -42,7 +39,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 0):
     echo '<p style="margin-top:16px;">Šī sadaļa ir redzama tikai administratoriem.</p>';
     echo '</div>';
 endif;
-echo '</div>'; // Close main-content
+echo '</div>';
 ?> 
 
 <script>
@@ -53,25 +50,21 @@ document.addEventListener('DOMContentLoaded', function() {
             var userId = td.getAttribute('data-user-id');
             var currentRole = td.getAttribute('data-current-role');
             
-            // Hide text
             this.style.display = 'none';
 
-            // Create select dropdown
             var select = document.createElement('select');
-            select.innerHTML = ''; // Clear previous options if any
+            select.innerHTML = '';
             select.innerHTML += '<option value="0">Administrators</option>';
             select.innerHTML += '<option value="1">Noliktavas darbinieks</option>';
             select.innerHTML += '<option value="2">Plauktu kārtotājs</option>';
 
-            // Set current role as selected
             select.value = currentRole;
 
-            // Add event listeners for change and blur
+
             select.addEventListener('change', function() {
                 var newRole = this.value;
-                var selectElement = this; // Keep reference to the select element
+                var selectElement = this;
 
-                // Send AJAX request to update the database
                 fetch('update_role.php', {
                     method: 'POST',
                     headers: {
@@ -83,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(data => {
                     var roleTextSpan = td.querySelector('.role-text');
                     if (data.status === 'success') {
-                        // Update the text displayed on success
                          switch (parseInt(newRole)) {
                             case 0: roleTextSpan.textContent = 'Administrators'; break;
                             case 1: roleTextSpan.textContent = 'Noliktavas darbinieks'; break;
@@ -91,48 +83,41 @@ document.addEventListener('DOMContentLoaded', function() {
                             default: roleTextSpan.textContent = 'Nezināma loma';
                         }
                         td.setAttribute('data-current-role', newRole);
-                        // Optionally display a temporary success message
                         console.log(data.message);
                     } else {
-                        // Revert the displayed text and show an error message on failure
                         console.error('Error updating role:', data.message);
-                         // Revert displayed text to the old value
                          switch (parseInt(currentRole)) {
                             case 0: roleTextSpan.textContent = 'Administrators'; break;
                             case 1: roleTextSpan.textContent = 'Noliktavas darbinieks'; break;
                             case 2: roleTextSpan.textContent = 'Plauktu kārtotājs'; break;
                             default: roleTextSpan.textContent = 'Nezināma loma';
                         }
-                         // Optionally display a more visible error message to the user
-                         alert('Kļūda atjaunojot lomu: ' + data.message); // Example using alert
+                         alert('Kļūda atjaunojot lomu: ' + data.message);   
                     }
-                    selectElement.remove(); // Remove select after change
-                    roleTextSpan.style.display = 'inline'; // Show text again
+                    selectElement.remove();
+                    roleTextSpan.style.display = 'inline';
                 })
                 .catch(error => {
                     console.error('Error in AJAX request:', error);
                      var roleTextSpan = td.querySelector('.role-text');
-                     // Revert displayed text on network error
                      switch (parseInt(currentRole)) {
                         case 0: roleTextSpan.textContent = 'Administrators'; break;
                         case 1: roleTextSpan.textContent = 'Noliktavas darbinieks'; break;
                         case 2: roleTextSpan.textContent = 'Plauktu kārtotājs'; break;
                         default: roleTextSpan.textContent = 'Nezināma loma';
                     }
-                    selectElement.remove(); // Remove select after error
-                    roleTextSpan.style.display = 'inline'; // Show text again
-                    alert('Radās tīkla kļūda, mēģiniet vēlreiz.'); // Example using alert
+                    selectElement.remove();
+                    roleTextSpan.style.display = 'inline';
+                    alert('Radās tīkla kļūda, mēģiniet vēlreiz.');
                 });
 
             });
 
             select.addEventListener('blur', function() {
-                // If the dropdown loses focus without a change, revert
                 this.remove();
                 td.querySelector('.role-text').style.display = 'inline';
             });
-
-            // Append select and focus it
+            
             td.appendChild(select);
             select.focus();
         });

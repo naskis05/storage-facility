@@ -11,7 +11,7 @@ require_once 'sidebar.php';
 </head>
 <body>
 <?php
-// Check if user is logged in and has appropriate role
+
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || !in_array($_SESSION['role'], [0, 1])) {
     header("Location: login.php");
     exit();
@@ -19,7 +19,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || !in_arr
 
 $message = '';
 
-// Handle product deletion
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
     $product_id = $_POST['product_id'];
     try {
@@ -34,14 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
     }
 }
 
-// Handle product addition
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $name = trim($_POST['name'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $quantity = $_POST['quantity'] ?? '';
     $price = $_POST['price'] ?? '';
 
-    // Backend validation
+
     if ($name === '' || $description === '' || $quantity === '' || $price === '') {
         $message = '<div class="error">Lūdzu, aizpildiet visus laukus ar derīgām vērtībām.</div>';
     } elseif (mb_strlen($name) < 2 || mb_strlen($name) > 100) {
@@ -68,17 +68,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     }
 }
 
-// Main content wrapper
 echo '<div class="main-content">';
 echo '<div class="admin-panel">';
 echo '<h2>Preču pārvaldība</h2>';
 
-// Display message if any
 if ($message) {
     echo $message;
 }
 
-// Add Product Form
 echo '<div class="product-form">';
 echo '<h3>Pievienot jaunu preci</h3>';
 echo '<form method="post">';
@@ -106,7 +103,7 @@ echo '<button type="submit" name="add_product" class="btn btn-primary">Pievienot
 echo '</form>';
 echo '</div>';
 
-// Products List
+
 echo '<h3>Preču saraksts</h3>';
 try {
     $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC");

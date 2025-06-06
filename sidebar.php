@@ -1,9 +1,9 @@
 <?php
-session_start(); // <-- Add this line at the very top
+session_start();
 require_once 'config.php';
 ?>
 
-<!-- Sidebar HTML -->
+
 <link rel="stylesheet" href="style.css">
 <div class="sidebar">
     <h2><span>🏠</span>STASH</h2>

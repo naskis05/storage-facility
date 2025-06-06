@@ -13,47 +13,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === '' || $email === '' || $password === '' || $confirm === '') {
         $message = 'Lūdzu, aizpildiet visus laukus.';
     } elseif (strpos($username, ' ') !== false) {
-        // Check for spaces
         $message = 'Lietotājvārdā nedrīkst būt atstarpes.';
     } elseif (!preg_match('/^[a-zA-Z0-9]*$/', $username)) {
-        // Check if it contains characters other than alphanumeric
         $message = 'Lietotājvārdā drīkst izmantot tikai burtus un ciparus.';
     } elseif (strlen($username) < 6 || strlen($username) > 20) {
-        // Check username length
         $message = 'Lietotājvārdam jābūt vismaz 8 un maksimāli 20 simbolus garš.';
     } elseif (strpos($password, ' ') !== false) {
-        // Check for spaces in password
         $message = 'Parolē nedrīkst būt atstarpes.';
     } elseif (strpos($email, ' ') !== false) {
-        // Check for spaces in email
         $message = 'E-pasta adresē nedrīkst būt atstarpes.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $message = 'Nederīgs e-pasta formāts.';
     } elseif ($password !== $confirm) {
         $message = 'Paroles nesakrīt.';
     } elseif (strlen($password) < 8 || strlen($password) > 20) {
-        // Check password length
         $message = 'Parolei jābūt vismaz 8 un maksimāli 20 simbolus garš.';
     } elseif (str_replace('.', '', $password) === '') {
-        // Check if the password consists only of dots
         $message = 'Nederīgs paroles formāts.';
     } else {
         try {
-            // Check if username or email already exists
             $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = ? OR email = ?");
             $stmt->execute([$username, $email]);
             if ($stmt->fetchColumn() > 0) {
                 $message = 'Lietotājvārds vai e-pasts jau eksistē.';
             } else {
-                // Hash the password
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 $created_at = date('Y-m-d H:i:s');
 
-                // Insert new user
                 $stmt = $pdo->prepare("INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)");
                 if ($stmt->execute([$username, $email, $hashed_password, $created_at])) {
                     $message = 'Reģistrācija veiksmīga!';
-                    // Redirect to login page after successful registration
                     header("Location: login.php");
                     exit();
                 } else {
