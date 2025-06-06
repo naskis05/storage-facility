@@ -2,7 +2,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
-    background: #FFF8E7;
+    background: #FFFFFF;
 }
 
 .sidebar {
@@ -11,10 +11,9 @@ body {
     left: 0;
     height: 100vh;
     width: 320px;
-    background: #A76545;
+    background-color: #8D6E63;
     color: #fff;
-    padding: 24px 16px;
-    border-right: 2px solid #8B4C32;
+    padding: 40px 30px;
     box-sizing: border-box;
     font-family: sans-serif;
 }
@@ -22,6 +21,14 @@ body {
 .sidebar h2 {
     color: #fff;
     margin-bottom: 24px;
+    font-size: 2em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar h2 span {
+    margin-right: 10px;
 }
 
 .sidebar ul {
@@ -34,13 +41,13 @@ body {
 }
 
 .sidebar a {
-    color: #FFE4B5;
+    color: #FFFFFF;
     text-decoration: none;
     font-weight: bold;
 }
 
 .sidebar a:hover {
-    color: #FFD700;
+    color: #FFA55D;
 }
 
 .sidebar ul {
@@ -50,13 +57,13 @@ body {
 .main-content {
     flex: 1;
     padding: 32px 48px;
-    background: #FFF8E7;
+    background: #FFFFFF;
     min-height: 100vh;
     margin-left: 320px;
 }
 
 h2 {
-    color: #8B4C32;
+    color: #222;
 }
 
 ul, p {
