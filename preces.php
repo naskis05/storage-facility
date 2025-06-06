@@ -144,8 +144,8 @@ try {
     echo '<p class="error">Kļūda iegūstot preces: ' . htmlspecialchars($e->getMessage()) . '</p>';
 }
 
-echo '</div>'; // Close admin-panel
-echo '</div>'; // Close main-content
+echo '</div>';
+echo '</div>';
 ?>
 </body>
 </html> 

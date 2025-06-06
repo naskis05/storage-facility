@@ -19,10 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['role'] = $user['role']; // Add this if you want to use role in sidebar
-                $_SESSION['logged_in'] = true;     // <-- Added line
+                $_SESSION['role'] = $user['role'];
+                $_SESSION['logged_in'] = true;
                 $message = 'Pieslēgšanās veiksmīga!';
-                // Redirect to dashboard or home page after successful login
                 header("Location: index.php");
                 exit();
             } else {
@@ -39,18 +38,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Pieslēgties | STASH</title>
-
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-    <div class="sidebar">
-        <h1><span>🏠</span>STASH</h1>
-        <div style="margin-top:40px; color:#222;">
-            <div><b>Pieslēgšanās</b></div>
-            <div style="margin-top:10px; font-size:0.95em;">Ievadiet savus datus</div>
-        </div>
+<div class="sidebar">
+    <h2><span>🏠</span>STASH</h2>
+    <div class="sidebar-login-info">
+        <div><b>Pieslēgšanās</b></div>
+        <div class="sidebar-login-desc">Ievadiet savus datus</div>
     </div>
-    <div class="main">
+</div>
+<div class="main-content">
+    <div class="admin-panel">
         <form class="login-form" method="post">
             <h2>Pieslēgties</h2>
             <?php if ($message): ?>
@@ -58,13 +57,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?= htmlspecialchars($message) ?>
                 </div>
             <?php endif; ?>
-            <label for="username">Lietotājvārds</label>
-            <input type="text" id="username" name="username" required>
-
-            <label for="password">Parole</label>
-            <input type="password" id="password" name="password" required>
-
-            <button type="submit">Pieslēgties</button>
+            <div class="form-group">
+                <label for="username">Lietotājvārds</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Parole</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Pieslēgties</button>
             <div style="text-align:center; margin-top:12px;">
                 <a href="register.php" style="color:#555; background:none; padding:0; border-radius:0; text-decoration:underline; font-weight:normal; font-size:0.97em; display:inline-block;">Izveidot jaunu kontu</a>
             </div>
