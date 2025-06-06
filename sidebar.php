@@ -4,27 +4,32 @@ require_once 'config.php';
 ?>
 
 <!-- Sidebar HTML -->
- <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 <div class="sidebar">
-    <h2>Sānu izvēlne</h2>
+    <h2><span>🏠</span>STASH</h2>
 
     <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true): ?>
-        <p>Lūdzu, <a href="login.php">piesakieties</a>.</p>
+        <div style="margin-top:40px; color:#FFFFFF;">
+            <div><b>Pieslēgšanās</b></div>
+            <div style="margin-top:10px; font-size:0.95em;">Lūdzu, piesakieties</div>
+        </div>
 
     <?php else: ?>
-        <p><strong>Lietotājs:</strong> <?php echo htmlspecialchars($_SESSION['username']); ?></p>
-        <p><strong>Loma:</strong>
-            <?php
-            switch ($_SESSION['role']) {
-                case 0: echo "Administrators"; break;
-                case 1: echo "Noliktavas darbinieks"; break;
-                case 2: echo "Plauktu kārtotājs"; break;
-                default: echo "Nezināma loma";
-            }
-            ?>
-        </p>
+        <div style="margin-top:40px; color:#FFFFFF;">
+            <div><b><?php echo htmlspecialchars($_SESSION['username']); ?></b></div>
+            <div style="margin-top:10px; font-size:0.95em;">
+                <?php
+                switch ($_SESSION['role']) {
+                    case 0: echo "Administrators"; break;
+                    case 1: echo "Noliktavas darbinieks"; break;
+                    case 2: echo "Plauktu kārtotājs"; break;
+                    default: echo "Nezināma loma";
+                }
+                ?>
+            </div>
+        </div>
 
-        <ul>
+        <ul style="margin-top: 40px;">
             <?php if ($_SESSION['role'] === 0): ?>
                 <li><a href="index.php">Pārskats</a></li>
                 <li><a href="lietotaji.php">Lietotāju pārvaldība</a></li>
@@ -39,6 +44,8 @@ require_once 'config.php';
             <?php endif; ?>
         </ul>
 
-        <p><a href="logout.php">Izrakstīties</a></p>
+        <div style="margin-top: 40px;">
+            <a href="logout.php">Izrakstīties</a>
+        </div>
     <?php endif; ?>
 </div>
