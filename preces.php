@@ -38,15 +38,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $name = trim($_POST['name'] ?? '');
     $description = trim($_POST['description'] ?? '');
-    $quantity = (int)($_POST['quantity'] ?? 0);
-    $price = (float)($_POST['price'] ?? 0);
+    $quantity = $_POST['quantity'] ?? '';
+    $price = $_POST['price'] ?? '';
 
-    if ($name === '' || $description === '' || $quantity <= 0 || $price <= 0) {
+    // Backend validation
+    if ($name === '' || $description === '' || $quantity === '' || $price === '') {
         $message = '<div class="error">Lūdzu, aizpildiet visus laukus ar derīgām vērtībām.</div>';
+    } elseif (mb_strlen($name) < 2 || mb_strlen($name) > 100) {
+        $message = '<div class="error">Preces nosaukumam jābūt 2-100 simbolus garam.</div>';
+    } elseif (mb_strlen($description) < 5 || mb_strlen($description) > 500) {
+        $message = '<div class="error">Aprakstam jābūt 5-500 simbolus garam.</div>';
+    } elseif (!ctype_digit($quantity) || (int)$quantity <= 0) {
+        $message = '<div class="error">Daudzumam jābūt pozitīvam veselam skaitlim.</div>';
+    } elseif (!is_numeric($price) || (float)$price <= 0) {
+        $message = '<div class="error">Cenai jābūt pozitīvam skaitlim.</div>';
+    } elseif (preg_match('/^\d+(\.\d{1,2})?$/', $price) !== 1) {
+        $message = '<div class="error">Cenai drīkst būt ne vairāk kā 2 cipari aiz komata.</div>';
     } else {
         try {
             $stmt = $pdo->prepare("INSERT INTO products (name, description, quantity, price, created_at) VALUES (?, ?, ?, ?, NOW())");
-            if ($stmt->execute([$name, $description, $quantity, $price])) {
+            if ($stmt->execute([$name, $description, (int)$quantity, (float)$price])) {
                 $message = '<div class="success">Prece veiksmīgi pievienota!</div>';
             } else {
                 $message = '<div class="error">Kļūda pievienojot preci.</div>';
