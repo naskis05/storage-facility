@@ -171,13 +171,14 @@ textarea.form-control {
 
 .products-table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin-top: 24px;
+    max-width: 900px;
+    margin: 24px auto 0 auto;
     background: white;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
 .products-table th {
@@ -582,4 +583,15 @@ body {
      font-weight:normal;
      font-size:0.97em;
      display:inline-block;
+}
+
+.btn, .btn-primary, .btn-danger {
+    font-size: 0.95em;
+    padding: 7px 14px;
+    border-radius: 4px;
+}
+
+.user-form {
+    max-width: 400px;
+    margin: 0 auto 32px auto;
 }

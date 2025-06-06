@@ -2,23 +2,74 @@
 require_once 'config.php';
 require_once 'sidebar.php';
 
+// Lietotāja dzēšana
+if (isset($_POST['delete_user']) && isset($_POST['user_id']) && $_SESSION['role'] === 0) {
+    $delete_id = (int)$_POST['user_id'];
+    if ($delete_id !== $_SESSION['user_id']) { // Neļaut dzēst sevi
+        $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+        $stmt->execute([$delete_id]);
+    }
+}
+
+// Lietotāja pievienošana
+$add_message = '';
+if (isset($_POST['add_user']) && $_SESSION['role'] === 0) {
+    $username = trim($_POST['new_username'] ?? '');
+    $email = trim($_POST['new_email'] ?? '');
+    $password = $_POST['new_password'] ?? '';
+    $role = (int)($_POST['new_role'] ?? 1);
+    if ($username === '' || $email === '' || $password === '') {
+        $add_message = '<div class="error">Aizpildi visus laukus!</div>';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $add_message = '<div class="error">Nederīgs e-pasts!</div>';
+    } elseif (strlen($username) < 3 || strlen($username) > 20) {
+        $add_message = '<div class="error">Lietotājvārdam jābūt 3-20 simboli!</div>';
+    } elseif (strlen($password) < 6) {
+        $add_message = '<div class="error">Parolei jābūt vismaz 6 simboli!</div>';
+    } else {
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = ? OR email = ?");
+        $stmt->execute([$username, $email]);
+        if ($stmt->fetchColumn() > 0) {
+            $add_message = '<div class="error">Lietotājs ar šādu e-pastu vai lietotājvārdu jau eksistē!</div>';
+        } else {
+            $hashed = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())");
+            if ($stmt->execute([$username, $email, $hashed, $role])) {
+                $add_message = '<div class="success">Lietotājs pievienots!</div>';
+            } else {
+                $add_message = '<div class="error">Kļūda pievienojot lietotāju!</div>';
+            }
+        }
+    }
+}
+
 echo '<div class="main-content">';
 if (isset($_SESSION['role']) && $_SESSION['role'] === 0):
-    echo '<div class="admin-panel" style="margin-top: 32px; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">';
+    echo '<div class="admin-panel">';
     echo '<h2>Admin CRUD Panel</h2>';
+    // Jauna lietotāja pievienošanas forma
+    echo '<h3>Pievienot jaunu lietotāju</h3>';
+    if ($add_message) echo $add_message;
+    echo '<form method="post" class="user-form">';
+    echo '<div class="form-group"><label>Lietotājvārds</label><input type="text" name="new_username" class="form-control" required></div>';
+    echo '<div class="form-group"><label>E-pasts</label><input type="email" name="new_email" class="form-control" required></div>';
+    echo '<div class="form-group"><label>Parole</label><input type="password" name="new_password" class="form-control" required></div>';
+    echo '<div class="form-group"><label>Loma</label><select name="new_role" class="form-control"><option value="0">Administrators</option><option value="1">Noliktavas darbinieks</option><option value="2">Plauktu kārtotājs</option></select></div>';
+    echo '<button type="submit" name="add_user" class="btn btn-primary">Pievienot lietotāju</button>';
+    echo '</form>';
+
     try {
         $stmt = $pdo->query("SELECT id, username, email, role, created_at FROM users");
         $users = $stmt->fetchAll();
         if ($users) {
-            echo '<table border="1" cellpadding="8" style="border-collapse:collapse; width:100%; margin-top:16px;">';
-            echo '<tr><th>ID</th><th>Lietotājvārds</th><th>E-pasts</th><th>Loma</th><th>Izveidots</th></tr>';
+            echo '<table class="products-table" style="margin-top:32px;">';
+            echo '<tr><th>ID</th><th>Lietotājvārds</th><th>E-pasts</th><th>Loma</th><th>Izveidots</th><th>Darbības</th></tr>';
             foreach ($users as $user) {
                 echo '<tr>';
                 echo '<td>' . htmlspecialchars($user['id']) . '</td>';
                 echo '<td>' . htmlspecialchars($user['username']) . '</td>';
                 echo '<td>' . htmlspecialchars($user['email']) . '</td>';
-                echo '<td class="editable-role" data-user-id="' . htmlspecialchars($user['id']) . '" data-current-role="' . htmlspecialchars($user['role']) . '">';
-                echo '<span class="role-text">';
+                echo '<td class="editable-role" data-user-id="' . htmlspecialchars($user['id']) . '" data-current-role="' . htmlspecialchars($user['role']) . '"><span class="role-text">';
                 switch ($user['role']) {
                     case 0: echo 'Administrators'; break;
                     case 1: echo 'Noliktavas darbinieks'; break;
@@ -27,6 +78,14 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 0):
                 }
                 echo '</span></td>';
                 echo '<td>' . htmlspecialchars($user['created_at']) . '</td>';
+                echo '<td>';
+                echo '<form method="post" style="display:inline-block; margin-right:4px;">';
+                echo '<input type="hidden" name="user_id" value="' . $user['id'] . '">';
+                echo '<button type="submit" name="delete_user" class="btn btn-danger" onclick="return confirm(\'Vai tiešām dzēst šo lietotāju?\')">Dzēst</button>';
+                echo '</form>';
+                echo '<a href="edit_user.php?id=' . $user['id'] . '" class="btn btn-primary" style="margin-right:4px;">Rediģēt</a>';
+                echo '<a href="profile.php?id=' . $user['id'] . '" class="btn" style="background:#8D6E63; color:#fff;">Profils</a>';
+                echo '</td>';
                 echo '</tr>';
             }
             echo '</table>';
@@ -40,7 +99,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 0):
     echo '</div>';
 endif;
 echo '</div>';
-?> 
+?>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
