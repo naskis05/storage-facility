@@ -177,7 +177,7 @@ try {
                 </div>
 
                 <div class="card">
-                    <h3>Atskaišu Sagatavošana</h3>
+                    <h3><a href="atskaites.php" style="color:inherit;text-decoration:underline;">Atskaišu Sagatavošana</a></h3>
                     <p>Pārskatiet un sagatavojiet atskaites par plauktu stāvokli</p>
                 </div>
 
