@@ -12,7 +12,6 @@ $selected_shelf_id = '';
 $selected_product_id = '';
 $selected_quantity = '1';
 
-// Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['create_shelf'])) {
         $shelf_identifier = $_POST['new_shelf_identifier'];
@@ -47,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $quantity = $_POST['quantity'];
 
         try {
-            // First check if we have enough quantity available
             $stmt = $pdo->prepare("
                 SELECT p.quantity as total_quantity,
                        COALESCE(SUM(sp.quantity), 0) as allocated_quantity
@@ -65,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("INSERT INTO shelf_products (shelf_id, product_id, quantity) VALUES (?, ?, ?) 
                                      ON DUPLICATE KEY UPDATE quantity = quantity + ?");
                 if ($stmt->execute([$shelf_id, $product_id, $quantity, $quantity])) {
-                    // Samazini produktu daudzumu noliktavā
                     $stmt2 = $pdo->prepare("UPDATE products SET quantity = quantity - ? WHERE id = ?");
                     $stmt2->execute([$quantity, $product_id]);
                     $message = '<div class="success">Prece veiksmīgi pievienota plauktam!</div>';
@@ -81,10 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (isset($_POST['delete_whole_shelf'])) {
         $shelf_id = (int)$_POST['shelf_id'];
         try {
-            // Dzēšam visas preces no šī plaukta
             $stmt = $pdo->prepare("DELETE FROM shelf_products WHERE shelf_id = ?");
             $stmt->execute([$shelf_id]);
-            // Dzēšam pašu plauktu
             $stmt = $pdo->prepare("DELETE FROM shelf_inventory WHERE id = ?");
             if ($stmt->execute([$shelf_id])) {
                 $message = '<div class="success">Plaukts un visas tajā esošās preces veiksmīgi dzēstas!</div>';
@@ -99,17 +94,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $product_id = (int)$_POST['product_id_for_delete'];
         $delete_quantity = (int)$_POST['delete_quantity'];
         try {
-            // Iegūstam pašreizējo daudzumu
             $stmt = $pdo->prepare("SELECT quantity FROM shelf_products WHERE shelf_id = ? AND product_id = ?");
             $stmt->execute([$shelf_id, $product_id]);
             $row = $stmt->fetch();
             if ($row && $row['quantity'] >= $delete_quantity) {
                 if ($row['quantity'] == $delete_quantity) {
-                    // Ja dzēš visu daudzumu, dzēšam rindu
                     $stmt = $pdo->prepare("DELETE FROM shelf_products WHERE shelf_id = ? AND product_id = ?");
                     $stmt->execute([$shelf_id, $product_id]);
                 } else {
-                    // Samazinam daudzumu
                     $stmt = $pdo->prepare("UPDATE shelf_products SET quantity = quantity - ? WHERE shelf_id = ? AND product_id = ?");
                     $stmt->execute([$delete_quantity, $shelf_id, $product_id]);
                 }
@@ -123,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Get all products for dropdown with quantity information
 $products = [];
 try {
     $stmt = $pdo->query("
@@ -139,7 +130,6 @@ try {
     $message .= '<div class="error">Kļūda iegūstot preču sarakstu: ' . htmlspecialchars($e->getMessage()) . '</div>';
 }
 
-// Get shelf inventory data
 $inventory = [];
 try {
     $stmt = $pdo->query("
@@ -222,7 +212,7 @@ try {
                                     <button class="btn-delete" onclick="openDeleteModal(<?php echo htmlspecialchars(json_encode($item['id'])); ?>, '<?php echo htmlspecialchars($item['shelf_identifier']); ?>')">Dzēst</button>
                                 </td>
                             </tr>
-                            <?php } // End foreach ?>
+                            <?php } ?>
                         </tbody>
                     </table>
                 <?php else: ?>
@@ -301,7 +291,6 @@ try {
         </div>
     </div>
 
-    <!-- Dzēšanas modālais logs -->
     <div id="deleteModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeDeleteModal()">&times;</span>

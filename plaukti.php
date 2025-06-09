@@ -2,7 +2,7 @@
 require_once 'config.php';
 require_once 'sidebar.php';
 
-// Check if user is logged in and has appropriate role (Plauktu kārtotājs or Admin for now)
+
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || !in_array($_SESSION['role'], [0, 2])) {
     header("Location: login.php");
     exit();
@@ -10,24 +10,21 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || !in_arr
 
 $message = '';
 
-// Handle adding a new shelf (only for allowed roles)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_shelf']) && in_array($_SESSION['role'], [0, 2])) {
     $shelf_identifier = trim($_POST['shelf_identifier'] ?? '');
 
-    // Basic validation
+
     if ($shelf_identifier === '') {
         $message = '<div class="error">Lūdzu, ievadiet plaukta kodu/nosaukumu.</div>';
     } elseif (strlen($shelf_identifier) < 2 || strlen($shelf_identifier) > 50) {
          $message = '<div class="error">Plaukta kodam/nosaukumam jābūt no 2 līdz 50 simboliem.</div>';
     } else {
         try {
-            // Check if identifier already exists
             $stmt = $pdo->prepare("SELECT COUNT(*) FROM shelf_inventory WHERE shelf_identifier = ?");
             $stmt->execute([$shelf_identifier]);
             if ($stmt->fetchColumn() > 0) {
                 $message = '<div class="error">Plaukts ar šādu kodu/nosaukumu jau eksistē.</div>';
             } else {
-                // Insert new shelf
                 $stmt = $pdo->prepare("INSERT INTO shelf_inventory (shelf_identifier) VALUES (?)");
                 if ($stmt->execute([$shelf_identifier])) {
                     $message = '<div class="success">Plaukts veiksmīgi pievienots!</div>';

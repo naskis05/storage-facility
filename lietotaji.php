@@ -2,7 +2,7 @@
 require_once 'config.php';
 require_once 'sidebar.php';
 
-// Lietotāja dzēšana
+
 if (isset($_POST['delete_user']) && isset($_POST['user_id']) && $_SESSION['role'] === 0) {
     $delete_id = (int)$_POST['user_id'];
     if ($delete_id !== $_SESSION['user_id']) { // Neļaut dzēst sevi
@@ -11,7 +11,7 @@ if (isset($_POST['delete_user']) && isset($_POST['user_id']) && $_SESSION['role'
     }
 }
 
-// Lietotāja pievienošana
+
 $add_message = '';
 if (isset($_POST['add_user']) && $_SESSION['role'] === 0) {
     $username = trim($_POST['new_username'] ?? '');
@@ -47,7 +47,7 @@ echo '<div class="main-content">';
 if (isset($_SESSION['role']) && $_SESSION['role'] === 0):
     echo '<div class="admin-panel">';
     echo '<h2>Lietotāji</h2>';
-    // Jauna lietotāja pievienošanas forma
+
     echo '<h3>Pievienot jaunu lietotāju</h3>';
     if ($add_message) echo $add_message;
     echo '<form method="post" class="user-form">';
