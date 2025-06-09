@@ -65,6 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("INSERT INTO shelf_products (shelf_id, product_id, quantity) VALUES (?, ?, ?) 
                                      ON DUPLICATE KEY UPDATE quantity = quantity + ?");
                 if ($stmt->execute([$shelf_id, $product_id, $quantity, $quantity])) {
+                    // Samazini produktu daudzumu noliktavā
+                    $stmt2 = $pdo->prepare("UPDATE products SET quantity = quantity - ? WHERE id = ?");
+                    $stmt2->execute([$quantity, $product_id]);
                     $message = '<div class="success">Prece veiksmīgi pievienota plauktam!</div>';
                 } else {
                     $message = '<div class="error">Kļūda pievienojot preci plauktam.</div>';
@@ -74,6 +77,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } catch (PDOException $e) {
             $message = '<div class="error">Kļūda pievienojot preci plauktam: ' . htmlspecialchars($e->getMessage()) . '</div>';
+        }
+    } elseif (isset($_POST['delete_whole_shelf'])) {
+        $shelf_id = (int)$_POST['shelf_id'];
+        try {
+            // Dzēšam visas preces no šī plaukta
+            $stmt = $pdo->prepare("DELETE FROM shelf_products WHERE shelf_id = ?");
+            $stmt->execute([$shelf_id]);
+            // Dzēšam pašu plauktu
+            $stmt = $pdo->prepare("DELETE FROM shelf_inventory WHERE id = ?");
+            if ($stmt->execute([$shelf_id])) {
+                $message = '<div class="success">Plaukts un visas tajā esošās preces veiksmīgi dzēstas!</div>';
+            } else {
+                $message = '<div class="error">Kļūda dzēšot plauktu.</div>';
+            }
+        } catch (PDOException $e) {
+            $message = '<div class="error">Kļūda dzēšot plauktu: ' . htmlspecialchars($e->getMessage()) . '</div>';
+        }
+    } elseif (isset($_POST['delete_quantity_from_shelf'])) {
+        $shelf_id = (int)$_POST['shelf_id'];
+        $product_id = (int)$_POST['product_id_for_delete'];
+        $delete_quantity = (int)$_POST['delete_quantity'];
+        try {
+            // Iegūstam pašreizējo daudzumu
+            $stmt = $pdo->prepare("SELECT quantity FROM shelf_products WHERE shelf_id = ? AND product_id = ?");
+            $stmt->execute([$shelf_id, $product_id]);
+            $row = $stmt->fetch();
+            if ($row && $row['quantity'] >= $delete_quantity) {
+                if ($row['quantity'] == $delete_quantity) {
+                    // Ja dzēš visu daudzumu, dzēšam rindu
+                    $stmt = $pdo->prepare("DELETE FROM shelf_products WHERE shelf_id = ? AND product_id = ?");
+                    $stmt->execute([$shelf_id, $product_id]);
+                } else {
+                    // Samazinam daudzumu
+                    $stmt = $pdo->prepare("UPDATE shelf_products SET quantity = quantity - ? WHERE shelf_id = ? AND product_id = ?");
+                    $stmt->execute([$delete_quantity, $shelf_id, $product_id]);
+                }
+                $message = '<div class="success">Norādītais preču daudzums veiksmīgi dzēsts no plaukta!</div>';
+            } else {
+                $message = '<div class="error">Nav tik daudz preču šajā plauktā.</div>';
+            }
+        } catch (PDOException $e) {
+            $message = '<div class="error">Kļūda dzēšot preces no plaukta: ' . htmlspecialchars($e->getMessage()) . '</div>';
         }
     }
 }
@@ -174,11 +219,7 @@ try {
                                 <td><?php echo htmlspecialchars($item['products_list'] ?? 'Nav preču'); ?></td>
                                 <td><?php echo htmlspecialchars($item['product_count']); ?></td>
                                 <td>
-                                    <form method="POST" action="" style="display: inline;">
-                                        <input type="hidden" name="shelf_id" value="<?php echo htmlspecialchars($item['id']); ?>">
-                                        <input type="hidden" name="shelf_identifier" value="<?php echo htmlspecialchars($item['shelf_identifier']); ?>">
-                                        <button type="submit" name="edit_shelf" class="btn-edit">Labot</button>
-                                    </form>
+                                    <button class="btn-delete" onclick="openDeleteModal(<?php echo htmlspecialchars(json_encode($item['id'])); ?>, '<?php echo htmlspecialchars($item['shelf_identifier']); ?>')">Dzēst</button>
                                 </td>
                             </tr>
                             <?php } // End foreach ?>
@@ -259,5 +300,97 @@ try {
             </div>
         </div>
     </div>
+
+    <!-- Dzēšanas modālais logs -->
+    <div id="deleteModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+            <h2>Dzēst plauktu</h2>
+            <p id="modalShelfInfo"></p>
+            <form method="POST" id="deleteShelfForm">
+                <input type="hidden" name="shelf_id" id="delete_shelf_id">
+                <button type="submit" name="delete_whole_shelf" class="btn-danger" style="margin-bottom:10px;width:100%;">Dzēst VISU plauktu</button>
+            </form>
+            <hr>
+            <form method="POST" id="deleteProductFromShelfForm">
+                <input type="hidden" name="shelf_id" id="delete_product_shelf_id">
+                <div class="form-group">
+                    <label for="product_id_for_delete">Izvēlies preci no plaukta:</label>
+                    <select name="product_id_for_delete" id="product_id_for_delete" required>
+                        <option value="">Izvēlies preci</option>
+                        <?php foreach ($products as $product): ?>
+                            <option value="<?php echo $product['id']; ?>"><?php echo htmlspecialchars($product['name']); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="delete_quantity">Dzēst preču daudzumu no plaukta:</label>
+                    <input type="number" name="delete_quantity" id="delete_quantity" min="1" required style="width:80px;">
+                </div>
+                <button type="submit" name="delete_quantity_from_shelf" class="btn-danger">Dzēst norādīto daudzumu</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function openDeleteModal(shelfId, shelfIdentifier) {
+        document.getElementById('deleteModal').style.display = 'block';
+        document.getElementById('delete_shelf_id').value = shelfId;
+        document.getElementById('delete_product_shelf_id').value = shelfId;
+        document.getElementById('modalShelfInfo').innerText = 'Plaukts: ' + shelfIdentifier;
+    }
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+    window.onclick = function(event) {
+        var modal = document.getElementById('deleteModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+    </script>
+    <style>
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-delete:hover, .btn-danger:hover {
+        background-color: #c82333;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 350px;
+        border-radius: 8px;
+        position: relative;
+    }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .close:hover {
+        color: #000;
+    }
+    </style>
 </body>
 </html> 
