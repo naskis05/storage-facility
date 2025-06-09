@@ -46,7 +46,7 @@ if (isset($_POST['add_user']) && $_SESSION['role'] === 0) {
 echo '<div class="main-content">';
 if (isset($_SESSION['role']) && $_SESSION['role'] === 0):
     echo '<div class="admin-panel">';
-    echo '<h2>Admin CRUD Panel</h2>';
+    echo '<h2>Lietotāji</h2>';
     // Jauna lietotāja pievienošanas forma
     echo '<h3>Pievienot jaunu lietotāju</h3>';
     if ($add_message) echo $add_message;
