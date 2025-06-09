@@ -38,12 +38,12 @@ require_once 'config.php';
                 <li><a href="lietotaji.php">Lietotāju pārvaldība</a></li>
                 <li><a href="preces.php">Preču pārvaldība</a></li>
                 <li><a href="plauktu_kartotajs.php">Plauktu kārtošana</a></li>
-                <li><a href="iestatijumi.php">Sistēmas iestatījumi</a></li>
+                <li><a href="order_management.php">Pasūtījumi</a></li>
 
 
             <?php elseif ($_SESSION['role'] === 1): ?>
                 <li><a href="preces.php">Preču pārvaldība</a></li>
-                <li><a href="pasutijumi.php">Pasūtījumi</a></li>
+                <li><a href="order_management.php">Pasūtījumi</a></li>
 
             <?php elseif ($_SESSION['role'] === 2): ?>
                 <li><a href="plauktu_kartotajs.php">Plauktu pārvaldība</a></li>
