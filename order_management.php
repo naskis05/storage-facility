@@ -2,7 +2,7 @@
 require_once 'config.php';
 require_once 'sidebar.php';
 
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['role'] !== 1) {
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['role'] > 1) {
     header("Location: login.php");
     exit();
 }
