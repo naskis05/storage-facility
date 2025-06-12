@@ -14,7 +14,7 @@ require_once 'config.php';
         <div class="sidebar-login-info">
             <div><b>Pieslēgšanās</b></div>
             <div class="sidebar-login-desc">Lūdzu, piesakieties</div>
-            <a href="login.php" class="btn btn-primary sidebar-login-btn" style="margin-top:18px;">Log in</a>
+            <a href="login.php" class="loginpoga">Log in</a>
         </div>
 
     <?php else: ?>

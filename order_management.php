@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSI
 
 $message = '';
 
-// Fetch data for forms and display
+
 $products = [];
 try {
     $stmt = $pdo->query("SELECT id, name, price, quantity FROM products ORDER BY name");
@@ -35,7 +35,7 @@ try {
     $message .= '<div class="error">Error fetching orders: ' . htmlspecialchars($e->getMessage()) . '</div>';
 }
 
-// Handle form submissions
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['create_order'])) {
         $user_id = $_SESSION['user_id']; // Assuming user_id is stored in session
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $pdo->beginTransaction();
 
-                // Create the order
+
                 $stmt = $pdo->prepare("INSERT INTO orders (user_id) VALUES (?)");
                 $stmt->execute([$user_id]);
                 $order_id = $pdo->lastInsertId();
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $quantity = $quantities[$index];
                     if ($quantity <= 0) continue;
 
-                    // Get product price and check stock
+
                     $stmt = $pdo->prepare("SELECT name, price, quantity FROM products WHERE id = ?");
                     $stmt->execute([$product_id]);
                     $product_info = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -66,11 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         throw new Exception('Insufficient stock for product ' . htmlspecialchars($product_info['name'] ?? 'ID ' . $product_id));
                     }
 
-                    // Add to order_items
+
                     $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price_at_order) VALUES (?, ?, ?, ?)");
                     $stmt->execute([$order_id, $product_id, $quantity, $product_info['price']]);
 
-                    // Deduct from product stock
+
                     $stmt = $pdo->prepare("UPDATE products SET quantity = quantity - ? WHERE id = ?");
                     $stmt->execute([$quantity, $product_id]);
                 }

@@ -7,7 +7,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
-// Iegūstam visus plauktos esošos produktus
+
 $report = [];
 try {
     $stmt = $pdo->query("

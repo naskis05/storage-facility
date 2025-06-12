@@ -65,9 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="password">Parole</label>
                 <input type="password" id="password" name="password" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;">Pieslēgties</button>
+            <button type="submit" class="btn btn-primary">Pieslēgties</button>
             <div style="text-align:center; margin-top:12px;">
-                <a href="register.php" style="color:#555; background:none; padding:0; border-radius:0; text-decoration:underline; font-weight:normal; font-size:0.97em; display:inline-block;">Izveidot jaunu kontu</a>
+                <a href="register.php">Izveidot jaunu kontu</a>
             </div>
         </form>
     </div>
