@@ -59,15 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
             <div class="form-group">
                 <label for="username">Lietotājvārds</label>
-                <input type="text" id="username" name="username" class="form-control" required>
+                <input type="text" id="username" name="username" class="form-control">
             </div>
             <div class="form-group">
                 <label for="password">Parole</label>
-                <input type="password" id="password" name="password" class="form-control" required>
+                <input type="password" id="password" name="password" class="form-control">
             </div>
             <button type="submit" class="btn btn-primary">Pieslēgties</button>
             <div style="text-align:center; margin-top:12px;">
-                <a href="register.php">Izveidot jaunu kontu</a>
+                <a href="register.php" class="auth-form-link">Izveidot jaunu kontu</a>
             </div>
         </form>
     </div>

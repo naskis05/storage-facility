@@ -59,11 +59,11 @@ if (isset($_POST['edit_user'])) {
         <form method="post" class="user-form">
             <div class="form-group">
                 <label>Lietotājvārds</label>
-                <input type="text" name="username" class="form-control" required value="<?= htmlspecialchars($user['username']) ?>">
+                <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($user['username']) ?>">
             </div>
             <div class="form-group">
                 <label>E-pasts</label>
-                <input type="email" name="email" class="form-control" required value="<?= htmlspecialchars($user['email']) ?>">
+                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($user['email']) ?>">
             </div>
             <div class="form-group">
                 <label>Loma</label>

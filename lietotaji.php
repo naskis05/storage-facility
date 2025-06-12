@@ -51,9 +51,9 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 0):
     echo '<h3>Pievienot jaunu lietotāju</h3>';
     if ($add_message) echo $add_message;
     echo '<form method="post" class="user-form">';
-    echo '<div class="form-group"><label>Lietotājvārds</label><input type="text" name="new_username" class="form-control" required></div>';
-    echo '<div class="form-group"><label>E-pasts</label><input type="email" name="new_email" class="form-control" required></div>';
-    echo '<div class="form-group"><label>Parole</label><input type="password" name="new_password" class="form-control" required></div>';
+    echo '<div class="form-group"><label>Lietotājvārds</label><input type="text" name="new_username" class="form-control"></div>';
+    echo '<div class="form-group"><label>E-pasts</label><input type="email" name="new_email" class="form-control"></div>';
+    echo '<div class="form-group"><label>Parole</label><input type="password" name="new_password" class="form-control"></div>';
     echo '<div class="form-group"><label>Loma</label><select name="new_role" class="form-control"><option value="0">Administrators</option><option value="1">Noliktavas darbinieks</option><option value="2">Plauktu kārtotājs</option></select></div>';
     echo '<button type="submit" name="add_user" class="btn btn-primary">Pievienot lietotāju</button>';
     echo '</form>';

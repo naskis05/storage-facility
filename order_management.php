@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div id="product-entries">
                             <div class="form-group product-entry">
                                 <label for="product_id_0">Prece:</label>
-                                <select name="product_id[]" id="product_id_0" required>
+                                <select name="product_id[]" id="product_id_0">
                                     <option value="">Izvēlieties preci</option>
                                     <?php foreach ($products as $product): ?>
                                         <option value="<?php echo htmlspecialchars($product['id']); ?>">
@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?php endforeach; ?>
                                 </select>
                                 <label for="quantity_0">Daudzums:</label>
-                                <input type="number" name="quantity[]" id="quantity_0" min="1" value="1" required>
+                                <input type="number" name="quantity[]" id="quantity_0" min="1" value="1">
                             </div>
                         </div>
                         <button type="button" class="btn-add" onclick="addProductEntry()">Pievienot citu preci</button>
@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             newEntry.classList.add('form-group', 'product-entry');
             newEntry.innerHTML = `
                 <label for="product_id_${productEntryCount}">Prece:</label>
-                <select name="product_id[]" id="product_id_${productEntryCount}" required>
+                <select name="product_id[]" id="product_id_${productEntryCount}">
                     <option value="">Izvēlieties preci</option>
                     <?php foreach ($products as $product): ?>
                         <option value="<?php echo htmlspecialchars($product['id']); ?>">
@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endforeach; ?>
                 </select>
                 <label for="quantity_${productEntryCount}">Daudzums:</label>
-                <input type="number" name="quantity[]" id="quantity_${productEntryCount}" min="1" value="1" required>
+                <input type="number" name="quantity[]" id="quantity_${productEntryCount}" min="1" value="1">
                 <button type="button" onclick="removeProductEntry(this)" class="btn-danger">Noņemt</button>
             `;
             productEntriesDiv.appendChild(newEntry);

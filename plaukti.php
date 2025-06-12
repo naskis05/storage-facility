@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_shelf']) && in_ar
                 <form method="post">
                     <div class="form-group">
                         <label for="shelf_identifier">Plaukta kods/Nosaukums</label>
-                        <input type="text" id="shelf_identifier" name="shelf_identifier" class="form-control" required placeholder="Ievadiet plaukta kodu vai nosaukumu">
+                        <input type="text" id="shelf_identifier" name="shelf_identifier" class="form-control" placeholder="Ievadiet plaukta kodu vai nosaukumu">
                     </div>
                     <button type="submit" name="add_shelf" class="btn btn-primary">Pievienot plauktu</button>
                 </form>

@@ -1,6 +1,10 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     font-family: Arial, sans-serif;
-    display: flex;
     background: #FFFFFF;
 }
 
@@ -57,12 +61,23 @@ body {
     color: #FFA55D;
 }
 
-.main-content {
+.main-content, .main {
     flex: 1;
-    padding: 32px 48px;
     background: #FFFFFF;
     min-height: 100vh;
     margin-left: 320px;
+    box-sizing: border-box;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.main-content {
+    padding: 32px 48px;
     display: flex;
     flex-direction: column;
 }
@@ -80,6 +95,8 @@ body {
 .login-form,
 .register-form {
     min-width: 320px;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .admin-panel {
@@ -207,6 +224,7 @@ p {
     font-size: 1em;
     color: #222;
     transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
 }
 
 .form-control:focus {
@@ -325,15 +343,21 @@ textarea.form-control {
     text-align: right;
 }
 
-.auth-form a {
+.auth-form-link {
     color: #222;
-    background: none;
-    padding: 0;
-    border-radius: 0;
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
     text-decoration: underline;
     font-weight: normal;
     font-size: 0.97em;
     display: inline-block;
+    box-shadow: none !important;
+}
+
+.form-text-center {
+    text-align: center;
+    margin-top: 12px;
 }
 
 .btn-delete {
@@ -383,8 +407,18 @@ textarea.form-control {
     color: #000;
 }
 
-.loginpoga {
-    color:red;
+.sidebar-login-btn {
+    margin-top: 18px;
+}
+
+.sidebar-register-info {
+    margin-top: 40px;
+    color: #222;
+}
+
+.sidebar-register-desc {
+    margin-top: 10px;
+    font-size: 0.95em;
 }
 
 @media (max-width: 768px) {

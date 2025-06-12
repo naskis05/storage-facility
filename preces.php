@@ -81,22 +81,22 @@ echo '<h3>Pievienot jaunu preci</h3>';
 echo '<form method="post">';
 echo '<div class="form-group">';
 echo '<label for="name">Preces nosaukums</label>';
-echo '<input type="text" id="name" name="name" class="form-control" required placeholder="Ievadiet preces nosaukumu">';
+echo '<input type="text" id="name" name="name" class="form-control" placeholder="Ievadiet preces nosaukumu">';
 echo '</div>';
 
 echo '<div class="form-group">';
 echo '<label for="description">Apraksts</label>';
-echo '<textarea id="description" name="description" class="form-control" required placeholder="Ievadiet preces aprakstu"></textarea>';
+echo '<textarea id="description" name="description" class="form-control" placeholder="Ievadiet preces aprakstu"></textarea>';
 echo '</div>';
 
 echo '<div class="form-group">';
 echo '<label for="quantity">Daudzums</label>';
-echo '<input type="number" id="quantity" name="quantity" class="form-control" required min="1" placeholder="Ievadiet daudzumu">';
+echo '<input type="number" id="quantity" name="quantity" class="form-control" placeholder="Ievadiet daudzumu">';
 echo '</div>';
 
 echo '<div class="form-group">';
 echo '<label for="price">Cena (EUR)</label>';
-echo '<input type="number" id="price" name="price" class="form-control" required min="0.01" step="0.01" placeholder="Ievadiet cenu">';
+echo '<input type="number" id="price" name="price" class="form-control" placeholder="Ievadiet cenu">';
 echo '</div>';
 
 echo '<button type="submit" name="add_product" class="btn btn-primary">Pievienot preci</button>';

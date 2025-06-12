@@ -61,119 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Reģistrācija | STASH</title>
-    <style>
-        body {
-            margin: 0;
-            background: #FFFFFF;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-        .sidebar {
-            background: #8D6E63;
-            width: 320px;
-            padding: 40px 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            color: #FFFFFF;
-        }
-        .sidebar h1 {
-            font-size: 2em;
-            margin: 0 0 20px 0;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            color: #FFFFFF;
-        }
-        .sidebar h1 span {
-            margin-right: 10px;
-        }
-        .main {
-            flex: 1;
-            background: #FFFFFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .register-form {
-            background: #FFFFFF;
-            padding: 32px 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            min-width: 320px;
-        }
-        .register-form h2 {
-            margin-top: 0;
-            margin-bottom: 24px;
-            font-size: 1.5em;
-            color: #222;
-        }
-        .register-form label {
-            display: block;
-            margin-bottom: 6px;
-            color: #222;
-            font-weight: 500;
-        }
-        .register-form input[type="text"],
-        .register-form input[type="password"],
-        .register-form input[type="email"] {
-            width: 100%;
-            padding: 8px 10px;
-            margin-bottom: 18px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background: #FFFFFF;
-            font-size: 1em;
-            color: #222;
-        }
-        .register-form button {
-            width: 100%;
-            padding: 10px;
-            background: #FFFFFF;
-            color: #222;
-            border: 1px solid #8D6E63;
-            border-radius: 4px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .register-form button:hover {
-            background: #FFA55D;
-            color: #FFFFFF;
-             border-color: #FFA55D;
-        }
-        .message {
-            margin-bottom: 16px;
-            color: #b00;
-            font-weight: bold;
-        }
-        .success {
-            color: #2b7a2b;
-        }
-        .register-form a {
-             color:#222;
-             background:none;
-             padding:0;
-             border-radius:0;
-             text-decoration:underline;
-             font-weight:normal;
-             font-size:0.97em;
-             display:inline-block;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
     <div class="sidebar">
         <h1><span>🏠</span>STASH</h1>
-        <div style="margin-top:40px; color:#222;">
+        <div class="sidebar-register-info">
             <div><b>Reģistrācija</b></div>
-            <div style="margin-top:10px; font-size:0.95em;">Lūdzu, izveidojiet savu kontu</div>
+            <div class="sidebar-register-desc">Lūdzu, izveidojiet savu kontu</div>
         </div>
     </div>
     <div class="main">
@@ -184,21 +80,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?= htmlspecialchars($message) ?>
                 </div>
             <?php endif; ?>
-            <label for="username">Lietotājvārds</label>
-            <input type="text" id="username" name="username" required maxlength="20" onkeypress="return event.charCode != 32">
+            <div class="form-group">
+                <label for="username">Lietotājvārds</label>
+                <input type="text" id="username" name="username" class="form-control">
+            </div>
 
-            <label for="email">E-pasts</label>
-            <input type="email" id="email" name="email" required onkeypress="return event.charCode != 32">
+            <div class="form-group">
+                <label for="email">E-pasts</label>
+                <input type="email" id="email" name="email" class="form-control">
+            </div>
 
-            <label for="password">Parole</label>
-            <input type="password" id="password" name="password" required maxlength="20" onkeypress="return event.charCode != 32">
+            <div class="form-group">
+                <label for="password">Parole</label>
+                <input type="password" id="password" name="password" class="form-control">
+            </div>
 
-            <label for="confirm">Apstipriniet paroli</label>
-            <input type="password" id="confirm" name="confirm" required maxlength="20" onkeypress="return event.charCode != 32">
+            <div class="form-group">
+                <label for="confirm">Apstipriniet paroli</label>
+                <input type="password" id="confirm" name="confirm" class="form-control">
+            </div>
 
-            <button type="submit">Reģistrēties</button>
-            <div style="text-align:center; margin-top:12px;">
-                <a href="login.php" style="color:#555; background:none; padding:0; border-radius:0; text-decoration:underline; font-weight:normal; font-size:0.97em; display:inline-block;">Man jau ir konts</a>
+            <button type="submit" class="btn btn-primary">Reģistrēties</button>
+            <div class="form-text-center">
+                <a href="login.php" class="auth-form-link">Man jau ir konts</a>
             </div>
         </form>
     </div>
