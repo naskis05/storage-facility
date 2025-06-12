@@ -42,9 +42,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $product_ids = $_POST['product_id'] ?? [];
         $quantities = $_POST['quantity'] ?? [];
 
+        // Backend validācija: pārbauda negatīvus vai nulles daudzumus
+        foreach ($quantities as $quantity) {
+            if ($quantity <= 0) {
+                $message = '<div class="error">Daudzums nevar būt negatīvs vai nulle!</div>';
+                break;
+            }
+        }
+
         if (empty($product_ids)) {
             $message = '<div class="error">Order must contain at least one product.</div>';
-        } else {
+        } elseif (empty($message)) {
             try {
                 $pdo->beginTransaction();
 
@@ -125,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="forms-container">
                 <div class="form-section">
                     <h3>Izveidot Jaunu Pasūtījumu</h3>
-                    <form method="POST" action="">
+                    <form method="POST" action="" onsubmit="return validateQuantities();">
                         <div id="product-entries">
                             <div class="form-group product-entry">
                                 <label for="product_id_0">Prece:</label>
@@ -138,7 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?php endforeach; ?>
                                 </select>
                                 <label for="quantity_0">Daudzums:</label>
-                                <input type="number" name="quantity[]" id="quantity_0" min="1" value="1">
+                                <input type="number" name="quantity[]" id="quantity_0" value="1">
+                                <div class="custom-error" style="color:#b00; font-size:0.95em; display:none;"></div>
                             </div>
                         </div>
                         <button type="button" class="btn-add" onclick="addProductEntry()">Pievienot citu preci</button>
@@ -209,7 +218,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endforeach; ?>
                 </select>
                 <label for="quantity_${productEntryCount}">Daudzums:</label>
-                <input type="number" name="quantity[]" id="quantity_${productEntryCount}" min="1" value="1">
+                <input type="number" name="quantity[]" id="quantity_${productEntryCount}" value="1">
+                <div class="custom-error" style="color:#b00; font-size:0.95em; display:none;"></div>
                 <button type="button" onclick="removeProductEntry(this)" class="btn-danger">Noņemt</button>
             `;
             productEntriesDiv.appendChild(newEntry);
@@ -219,6 +229,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function removeProductEntry(button) {
             button.parentNode.remove();
         }
+
+        // Frontend validācija ar savu kļūdas paziņojumu
+        function validateQuantities() {
+            let valid = true;
+            const entries = document.querySelectorAll('.product-entry');
+            entries.forEach(function(entry) {
+                const input = entry.querySelector('input[name="quantity[]"]');
+                const errorDiv = entry.querySelector('.custom-error');
+                if (parseInt(input.value) <= 0 || isNaN(parseInt(input.value))) {
+                    errorDiv.textContent = 'Daudzums nevar būt negatīvs vai nulle!';
+                    errorDiv.style.display = 'block';
+                    input.classList.add('input-error');
+                    valid = false;
+                } else {
+                    errorDiv.textContent = '';
+                    errorDiv.style.display = 'none';
+                    input.classList.remove('input-error');
+                }
+            });
+            return valid;
+        }
+
+        // Noņem kļūdas paziņojumu, kad lietotājs labo vērtību
+        document.addEventListener('input', function(e) {
+            if (e.target && e.target.name === 'quantity[]') {
+                const entry = e.target.closest('.product-entry');
+                const errorDiv = entry.querySelector('.custom-error');
+                if (parseInt(e.target.value) > 0) {
+                    errorDiv.textContent = '';
+                    errorDiv.style.display = 'none';
+                    e.target.classList.remove('input-error');
+                }
+            }
+        });
     </script>
+
+    <style>
+    .input-error {
+        border: 1.5px solid #b00 !important;
+        background: #fff6f6;
+    }
+    </style>
 </body>
 </html> 
