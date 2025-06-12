@@ -34,7 +34,6 @@ require_once 'config.php';
 
         <ul class="sidebar-menu">
             <?php if ($_SESSION['role'] === 0): ?>
-                <li><a href="index.php">Pārskats</a></li>
                 <li><a href="lietotaji.php">Lietotāju pārvaldība</a></li>
                 <li><a href="preces.php">Preču pārvaldība</a></li>
                 <li><a href="plauktu_kartotajs.php">Plauktu kārtošana</a></li>
